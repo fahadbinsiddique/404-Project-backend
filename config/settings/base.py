@@ -7,6 +7,7 @@ Environment-specific overrides live in `development.py` and `production.py`.
 from datetime import timedelta
 from pathlib import Path
 
+# pyrefly: ignore [missing-import]
 from decouple import Csv, config
 
 # ---------------------------------------------------------------------------
@@ -53,6 +54,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ---------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -167,6 +169,12 @@ CORS_ALLOWED_ORIGINS = config(
     cast=Csv(),
 )
 CORS_ALLOW_CREDENTIALS = True
+import os
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ---------------------------------------------------------------------------
 # Custom User Model (email-based login)
