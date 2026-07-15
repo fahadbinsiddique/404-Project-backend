@@ -3,7 +3,7 @@ from decouple import config
 
 from .base import *  # noqa: F401,F403
 
-DEBUG = False
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=True, cast=bool)
 SESSION_COOKIE_SECURE = True
