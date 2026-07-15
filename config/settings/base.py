@@ -6,6 +6,7 @@ Environment-specific overrides live in `development.py` and `production.py`.
 
 from datetime import timedelta
 from pathlib import Path
+import os
 
 # pyrefly: ignore [missing-import]
 from decouple import Csv, config
@@ -90,8 +91,9 @@ ASGI_APPLICATION = "config.asgi.application"
 # Database (Uses DATABASE_URL if available, otherwise fallback to SQLite)
 # ---------------------------------------------------------------------------
 DATABASES = {
-    "default": dj_database_url.config(
-        default=config("DATABASE_URL", default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+    'default': dj_database_url.config(
+        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
+        conn_max_age=600
     )
 }
 
