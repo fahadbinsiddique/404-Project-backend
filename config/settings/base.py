@@ -9,6 +9,7 @@ from pathlib import Path
 
 # pyrefly: ignore [missing-import]
 from decouple import Csv, config
+import dj_database_url
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -86,13 +87,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 # ---------------------------------------------------------------------------
-# Database (SQLite by default, matches the assignment requirements)
+# Database (Uses DATABASE_URL if available, otherwise fallback to SQLite)
 # ---------------------------------------------------------------------------
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL", default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+    )
 }
 
 # ---------------------------------------------------------------------------
